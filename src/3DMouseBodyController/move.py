@@ -1,14 +1,78 @@
-import socket, json
+import requests
+import json
+import time
 
-cmd = {
-    "command": "move_body",
-    "name": "Body1",
-    "rotate": { "axis":[0,0,1], "angle_deg": 30, "pivot": "center" },
-    "translate": { "dx_mm": 10, "dy_mm": 0, "dz_mm": 0 },
-    "mode": "feature"  # or "occurrence"
-}
+class FusionController:
+    def __init__(self, fusion_server_url="http://localhost:8080"):
+        self.server_url = fusion_server_url
+    
+    def rotate_body(self, body_name: str, rx: float, ry: float, rz: float):
+        command = {
+            "command": "rotate",
+            "body_name": body_name,
+            "rx": rx,
+            "ry": ry,
+            "rz": rz
+        }
+        
+        response = requests.post(self.server_url, json=command)
+        return response.json()
+    
+    def translate_body(self, body_name: str, tx: float, ty: float, tz: float):
+        command = {
+            "command": "translate",
+            "body_name": body_name,
+            "tx": tx,
+            "ty": ty,
+            "tz": tz
+        }
+        
+        response = requests.post(self.server_url, json=command)
+        return response.json()
+    
+controller = FusionController()
+# result = controller.rotate_body("Body1", 15.0, 0.0, 0.0)
+# print(f"Rotation result: {result}")
 
-payload = (json.dumps(cmd) + "\n").encode("utf-8")
-with socket.create_connection(("127.0.0.1", 8080), timeout=2.0) as s:
-    s.sendall(payload)
-print("Command sent.")
+# result = controller.translate_body("Body1", 0.5, 0.0, 0.0)
+# print(f"Rotation result: {result}")
+# time.sleep(0.1)
+
+# result = controller.translate_body("Body1", 0.0, 0.5, 0.0)
+# print(f"Rotation result: {result}")
+# time.sleep(0.1)
+
+# result = controller.translate_body("Body1", 0.0, 0.0, 0.5)
+# print(f"Rotation result: {result}")
+# time.sleep(0.1)
+
+
+# for i in range(5):
+#     result = controller.rotate_body("Body1", 2.0, 0.0, 0.0)
+#     print(f"Rotation result: {result}")
+#     time.sleep(0.1)
+
+# for i in range(5):
+#     result = controller.rotate_body("Body1", 0.0, 2.0, 0.0)
+#     print(f"Rotation result: {result}")
+#     time.sleep(0.1)
+
+for i in range(5):
+    result = controller.rotate_body("Body1", 0.0, 0.0, 1.0)
+    print(f"Rotation result: {result}")
+    time.sleep(0.1)
+
+for i in range(3):
+    result = controller.translate_body("Body1", 0.1, 0.0, 0.0)
+    print(f"Translation result: {result}")
+    time.sleep(0.05)
+
+for i in range(3):
+    result = controller.translate_body("Body1", 0.0, 0.1, 0.0)
+    print(f"Translation result: {result}")
+    time.sleep(0.05)
+
+for i in range(3):
+    result = controller.translate_body("Body1", 0.0, 0.0, 0.1)
+    print(f"Translation result: {result}")
+    time.sleep(0.05)
