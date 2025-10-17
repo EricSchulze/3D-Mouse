@@ -31,7 +31,7 @@ where
 }
 ```
 where
-* tx: float, move camera along x-asix by _rx_ unit.
-* ty: float, move camera along y-asix by _ry_ unit.
-* tz: float, move camera along z-asix by _rz_ unit.
+* tx: float, move camera along x-asix by _tx_ unit.
+* ty: float, move camera along y-asix by _ty_ unit.
+* tz: float, move camera along z-asix by _tz_ unit.
 
