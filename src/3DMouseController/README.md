@@ -2,6 +2,11 @@
 
 ## Fusion360 AddIn
 The directory Fusion360ControllerAddIn is a Fusion360 AddIn and it can be added as an AddIn in Fusion360 directly.
+Create a AddIn called Fusion360ControllerAddIn and it will locate in the following path by default:
+```Bash
+%HOME%\AppData\Roaming\Autodesk\Autodesk Fusion 360\API\AddIns\Fusion360ControllerAddIn
+```
+Then copy 3DMouseControllerAddIn.py in this repo to the directory above(Replace the exisitng file).
 
 ## Client
 The client is a python script that sends commands in json format to the AddIn. There are two commands: rotate and translate.

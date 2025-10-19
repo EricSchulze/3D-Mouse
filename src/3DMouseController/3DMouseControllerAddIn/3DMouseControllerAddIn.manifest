@@ -7,7 +7,7 @@
 	},
 	"runOnStartup":	false,
 	"version":	"",
-	"supportedOS":	"windows|mac",
+	"supportedOS":	"windows",
 	"editEnabled":	true,
 	"iconFilename":	"ScriptIcon.svg"
 }
