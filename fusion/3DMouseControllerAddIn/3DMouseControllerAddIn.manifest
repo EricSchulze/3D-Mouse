@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion",
+	"type":	"addin",
+	"author":	"Junlin",
+	"description":	{
+		"":	""
+	},
+	"runOnStartup":	false,
+	"version":	"",
+	"supportedOS":	"windows",
+	"editEnabled":	true,
+	"iconFilename":	"ScriptIcon.svg"
+}
