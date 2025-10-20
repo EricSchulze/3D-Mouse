@@ -1,1 +1,5 @@
+# mtb shared library
 mtb_shared
+
+# virtual env
+venv

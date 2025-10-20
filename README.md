@@ -1,4 +1,4 @@
-MagSense: Unlocking 6 Degrees of Freedom with Infineon solution
+# MagSense: Unlocking 6 Degrees of Freedom with Infineon solution
 
 ## 3D-Mouse Project Repository
 
@@ -32,5 +32,3 @@ https://www.instructables.com/DIY-Space-Mouse-for-Fusion-360-Using-Magnets/
 * project 2:LCD sensor
 https://www.hackster.io/news/colton-baldridge-s-os3m-mouse-is-a-smart-open-source-3d-printable-spacemouse-alternative-e16078a1d8bf
 https://hackaday.io/project/187172-os3m-mouse
-
-### 
