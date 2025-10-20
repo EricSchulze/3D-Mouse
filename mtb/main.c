@@ -64,10 +64,10 @@
  * to real GPIOs in the design.modus if different aliases are required.
  * One CS uses the default CYBSP_SPI_CS; the other two use user LED pins as
  * placeholders and should be updated for the real board wiring. */
-#define VDD_EN_LOW_PIN   (P9_3)    /* placeholder, active low enable */
-#define CS_SENSOR_1_PIN  (P9_7)
+#define VDD_EN_PIN   (P9_7)    /* placeholder, active low enable */
+#define CS_SENSOR_1_PIN  (P9_3)
 #define CS_SENSOR_2_PIN  (P9_4)
-#define CS_SENSOR_3_PIN  (P9_6)
+#define CS_SENSOR_3_PIN  (P9_5)
 
 /* Number of bytes to read from sensor (10 in Arduino sketch) */
 #define SENSOR_REG_BYTES  (10)
@@ -179,8 +179,8 @@ int main(void)
     cyhal_gpio_init(CS_SENSOR_1_PIN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, true);
     cyhal_gpio_init(CS_SENSOR_2_PIN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, true);
     cyhal_gpio_init(CS_SENSOR_3_PIN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, true);
-    /* VDD enable is active low in the Arduino sketch; drive it low to enable */
-    cyhal_gpio_init(VDD_EN_LOW_PIN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, false);
+    /* VDD enable */
+    cyhal_gpio_init(VDD_EN_PIN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, true);
 
     printf("TLE493D-P3I8 sensors example (no INT)\r\n");
     printf("Bx, By, Bz, Temp, Diag\r\n");
@@ -198,9 +198,13 @@ int main(void)
         parse_sensor_data(rx_buf, &sensor3);
 
         /* Print results */
-        print_sensor("Sensor1", &sensor1);
-        print_sensor("Sensor2", &sensor2);
-        print_sensor("Sensor3", &sensor3);
+        // print_sensor("Sensor1", &sensor1);
+        // print_sensor("Sensor2", &sensor2);
+        // print_sensor("Sensor3", &sensor3);
+        
+        printf("%d,%d,%d,", sensor1.bx, sensor1.by, sensor1.bz);
+        printf("%d,%d,%d,", sensor2.bx, sensor2.by, sensor2.bz);
+        printf("%d,%d,%d\r\n", sensor3.bx, sensor3.by, sensor3.bz);
 
         cyhal_system_delay_ms(POLL_DELAY_MS);
     }
