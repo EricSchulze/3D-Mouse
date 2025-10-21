@@ -1,5 +1,35 @@
 # Fusion360 Controller
 
+## Overview
+
+```
++---------------------------------+                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|            Fusion360            |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|                                 |                                                                  
+|        +---------------+        |                                                                  
+|        |               |        |                                         +-----------------------+
+|        |     AddIn     |        |                                         |                       |
+|        |               |        |                                         |                       |
+|        +---+-------+---+        |                                         |        move.py        |
+|            | :8080 |            |                                         |                       |
+|            +----^--+            |                                         |                       |
++-----------------+---------------+                                         +-----------+-----------+
+                  |                                                                     |            
+                  |                                                                     |            
+                  |                         send command to                             |            
+                  +---------------------------------------------------------------------+            
+                                           http://localhost:8080                                     
+```
+
+
 ## Fusion360 AddIn
 The directory Fusion360ControllerAddIn is a Fusion360 AddIn and it can be added as an AddIn in Fusion360 directly.
 Create a AddIn called Fusion360ControllerAddIn and it will locate in the following path by default:

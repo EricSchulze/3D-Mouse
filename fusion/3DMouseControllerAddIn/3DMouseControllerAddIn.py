@@ -88,14 +88,88 @@ class FusionCommandHandler(BaseHTTPRequestHandler):
         else:
             raise ValueError(f"Unknown command: {command_type}")
     
-    def orbit_rotate(self, data):
-        rx = data.get('rx', 0.0)
-        ry = data.get('ry', 0.0)
-        rz = data.get('rz', 0.0)
+    def get_camera_axes(self, camera):
+        """Calculate camera's local coordinate system (Forward, Right, Up)"""
+        
+        eye = camera.eye
+        target = camera.target
+        up_vector = camera.upVector
+        
+        # Forward vector (from eye to target)
+        forward = eye.vectorTo(target)
+        forward.normalize()
+        
+        # Right vector (cross product of forward and up)
+        right = forward.crossProduct(up_vector)
+        right.normalize()
+        
+        # Recalculate up vector to ensure orthogonal system
+        up = right.crossProduct(forward)
+        up.normalize()
+        
+        return forward, right, up
+
+    def rotate_on_roll(self, roll):
 
         viewport = self.app.activeViewport
         camera = viewport.camera
 
+        fvec, rvec, uvec = self.get_camera_axes(camera)
+
+        rotMatrix = adsk.core.Matrix3D.create()
+        eye = camera.eye
+        rotMatrix.setToRotation(math.radians(roll), fvec, eye)
+        uvec.transformBy(rotMatrix)
+
+        camera.upVector = uvec
+        camera.isSmoothTransition = False
+        viewport.camera = camera
+        adsk.doEvents()
+        viewport.refresh()
+        time.sleep(0.01)
+
+    def orbit_rotate(self, data):
+        pitch = data.get('rx', 0.0)  # pitch
+        roll = data.get('ry', 0.0)  # roll
+        yaw = data.get('rz', 0.0)  # yaw
+
+        viewport = self.app.activeViewport
+        camera = viewport.camera
+
+        #### test
+        fvec, rvec, uvec = self.get_camera_axes()
+
+        rotMatrix = adsk.core.Matrix3D.create()
+        eye = camera.eye
+        target = camera.target
+        # rotMatrix.setToRotation(math.radians(pitch), rvec, target)
+        # rotMatrix.setToRotation(math.radians(yaw), uvec, target)
+        rotMatrix.setToRotation(math.radians(roll), fvec, eye)
+        uvec.transformBy(rotMatrix)
+        # uvec.transformBy(rotMatrix)
+
+        # target = adsk.core.Point3D.create(0,0,0)
+        # up = adsk.core.Vector3D.create(0,0,1)
+        # steps = 90
+        
+        # dist = camera.target.distanceTo(camera.eye)
+    
+        # for i in range(0, steps):
+        #     eye = adsk.core.Point3D.create(dist * math.cos((math.pi*2) * (i/steps)), dist * math.sin((math.pi*2) * (i/steps)), 10)
+            
+        #     camera.eye = eye
+        #     camera.target = target
+        #     camera.upVector = up
+        
+        #     camera.isSmoothTransition = False
+        #     viewport.camera = camera
+        #     adsk.doEvents()
+        #     viewport.refresh()
+        #     time.sleep(0.01)
+
+        #### end test
+
+        """
         eye = camera.eye
         target = camera.target
         
@@ -110,15 +184,19 @@ class FusionCommandHandler(BaseHTTPRequestHandler):
 
         transform.setToRotation(math.radians(rz), adsk.core.Vector3D.create(0, 0, 1), target_point)
         eye.transformBy(transform)
+        """
 
 
         # Update camera
-        camera.eye = eye
+        # camera.eye = eye
+        camera.upVector = uvec
+        camera.isSmoothTransition = False
         viewport.camera = camera
         adsk.doEvents()
+        viewport.refresh()
         time.sleep(0.01)
 
-        return {"status": "success", "operation": "orbit_rotate", "rx": rx, "ry": ry, "rz": rz}
+        return {"status": "success", "operation": "orbit_rotate", "pitch": pitch, "roll": roll, "yaw": yaw}
 
     def orbit_translate(self, data):
         tx = data.get('tx', 0.0)
