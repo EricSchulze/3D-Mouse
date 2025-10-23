@@ -119,7 +119,7 @@ class FusionCommandHandler(BaseHTTPRequestHandler):
         viewport.refresh()
         time.sleep(0.01)
 
-        return {"status": "success", "operation": "orbit_rotate", "pitch": pitch, "roll": roll, "yaw": yaw}
+        return {"status": "success", "operation": "rotate", "pitch": pitch, "roll": roll, "yaw": yaw}
 
     def translate_x(self, viewport, tx, rvec):
         camera = viewport.camera
@@ -208,53 +208,7 @@ class FusionCommandHandler(BaseHTTPRequestHandler):
         viewport.refresh()
         time.sleep(0.01)
 
-        return {"status": "success", "operation": "orbit_rotate", "tx": tx, "ty": ty, "tz": tz}
-
-    """
-    def orbit_translate(self, data):
-        tx = data.get('tx', 0.0)
-        ty = data.get('ty', 0.0)
-        tz = data.get('tz', 0.0)
-
-        viewport = self.app.activeViewport
-        camera = viewport.camera
-
-        eye = camera.eye
-        target = camera.target
-        up_vector = camera.upVector
-        
-        # Calculate camera's right vector (local X-axis)
-        forward = eye.vectorTo(target)
-        forward.normalize()
-        
-        right = forward.crossProduct(up_vector)
-        right.normalize()
-
-        tx = right.x * tx
-        ty = right.y * ty
-
-        new_eye = adsk.core.Point3D.create(
-            eye.x + tx,
-            eye.y + ty,
-            eye.z + tz
-        )
-
-        new_target = adsk.core.Point3D.create(
-            target.x + tx,
-            target.y + ty,
-            target.z + tz
-        )
-
-        camera.eye = new_eye
-        camera.target = new_target
-        camera.isSmoothTransition = False
-        viewport.camera = camera
-        adsk.doEvents()
-        viewport.refresh()
-        time.sleep(0.01)
-
-        return {"status": "success", "operation": "orbit_rotate", "tx": tx, "ty": ty, "tz": tz}
-    """
+        return {"status": "success", "operation": "translate", "tx": tx, "ty": ty, "tz": tz}
 
 class FusionHTTPServer:
     def __init__(self, port=8080):
