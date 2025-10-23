@@ -14,8 +14,7 @@ class FusionController:
             "rz": rz
         }
         
-        response = requests.post(self.server_url, json=command)
-        return response.json()
+        return requests.post(self.server_url, json=command)
     
     def translate(self, tx: float, ty: float, tz: float):
         command = {
@@ -25,8 +24,7 @@ class FusionController:
             "tz": tz
         }
         
-        response = requests.post(self.server_url, json=command)
-        return response.json()
+        return requests.post(self.server_url, json=command)
     
 controller = FusionController()
 
@@ -40,29 +38,52 @@ controller = FusionController()
 #     print(f"Rotation result: {result}")
 #     time.sleep(0.1)
 
+############################ rotation #############################
+# rotate on pitch, roll, yaw by 10.0 degrees respectively
 for i in range(10):
     result = controller.rotate(1.0, 1.0, 1.0)
-    print(f"Rotation result: {result}")
+    print(f"Rotation result: {result.content.decode('utf-8')}")
     time.sleep(0.01)
 
+# rotate on pitch by -10.0 degrees
 for i in range(10):
-    result = controller.rotate(-1.0, -1.0, -1.0)
-    print(f"Rotation result: {result}")
+    result = controller.rotate(-1.0, 0.0, 0.0)
+    print(f"Rotation result: {result.content.decode('utf-8')}")
     time.sleep(0.01)
 
-"""
-for i in range(3):
-    result = controller.translate("Body1", 0.1, 0.0, 0.0)
-    print(f"Translation result: {result}")
-    time.sleep(0.05)
+# rotate on roll by -10.0 degrees
+for i in range(10):
+    result = controller.rotate(0.0, -1.0, 0.0)
+    print(f"Rotation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
 
-for i in range(3):
-    result = controller.translate("Body1", 0.0, 0.1, 0.0)
-    print(f"Translation result: {result}")
-    time.sleep(0.05)
+# rotate on yaw by -10.0 degrees
+for i in range(10):
+    result = controller.rotate(0.0, 0.0, -1.0)
+    print(f"Rotation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
 
-for i in range(3):
-    result = controller.translate("Body1", 0.0, 0.0, 0.1)
-    print(f"Translation result: {result}")
-    time.sleep(0.05)
-"""
+############################ translation #############################
+# translate on x, y, z by -1.0 respectively
+for i in range(10):
+    result = controller.translate(-0.1, -0.1, -0.1)
+    print(f"Translation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
+
+# translate on x by 1.0
+for i in range(10):
+    result = controller.translate(0.1, 0.0, 0.0)
+    print(f"Translation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
+
+# translate on y by 1.0
+for i in range(10):
+    result = controller.translate(0.0, 0.1, 0.0)
+    print(f"Translation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
+
+# translate on z by 1.0
+for i in range(10):
+    result = controller.translate(0.0, 0.0, 0.1)
+    print(f"Translation result: {result.content.decode('utf-8')}")
+    time.sleep(0.01)
